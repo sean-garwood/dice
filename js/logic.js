@@ -90,5 +90,13 @@
     return roll.map((v) => v === 1 || v === 5 || counts[v] >= 3);
   }
 
-  return { TARGET, countsOf, isStraight, scoreSelection, validateKeep, hasAnyScore, scoringCandidates };
+  /* Validate that a player can bank. If they have zero points, they need 500+ accumulated. */
+  function canBank(currentScore, tablePoints) {
+    if (currentScore === 0 && tablePoints < 500) {
+      return { valid: false, reason: 'You need 500 points to get on the board.' };
+    }
+    return { valid: true };
+  }
+
+  return { TARGET, countsOf, isStraight, scoreSelection, validateKeep, hasAnyScore, scoringCandidates, canBank };
 });

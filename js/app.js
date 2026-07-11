@@ -178,6 +178,18 @@
     const kept = applyKeep();
     if (!kept) return;
     const p = currentPlayer();
+    const bankCheck = L.canBank(p.score, state.turn.points);
+    if (!bankCheck.valid) {
+      state.banner = {
+        type: 'invalid-bank',
+        title: 'Cannot bank yet',
+        emoji: '⏸️',
+        text: bankCheck.reason,
+      };
+      save();
+      render();
+      return;
+    }
     const total = p.score + state.turn.points;
     if (total > TARGET) {
       bust();
@@ -361,7 +373,13 @@
     $('#banner-emoji').textContent = b.emoji;
     $('#banner-title').textContent = b.title;
     $('#banner-text').textContent = b.text;
-    $('#btn-banner-continue').textContent = b.type === 'win' ? 'New game' : 'Next player';
+    if (b.type === 'win') {
+      $('#btn-banner-continue').textContent = 'New game';
+    } else if (b.type === 'invalid-bank') {
+      $('#btn-banner-continue').textContent = 'Keep rolling';
+    } else {
+      $('#btn-banner-continue').textContent = 'Next player';
+    }
   }
 
   /* ---------- stats dialog ---------- */
@@ -436,6 +454,10 @@
     if (state.banner && state.banner.type === 'win') {
       state = null;
       localStorage.removeItem(GAME_KEY);
+      render();
+    } else if (state.banner && state.banner.type === 'invalid-bank') {
+      state.banner = null;
+      save();
       render();
     } else {
       nextTurn();
