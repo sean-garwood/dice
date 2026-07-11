@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ten Thousand — Dice Game</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>🎲 Ten Thousand</h1>
+    <nav>
+      <button id="btn-rules" class="ghost">Rules</button>
+      <button id="btn-stats" class="ghost">Stats</button>
+      <button id="btn-new-game" class="ghost danger" hidden>New game</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== Setup screen ===== -->
+    <section id="setup" class="panel">
+      <h2>New game</h2>
+      <p class="muted">First to land on <strong>exactly 10,000</strong> wins. Go over and you bust!</p>
+      <label for="player-count">Players</label>
+      <div id="player-count" class="count-picker" role="radiogroup" aria-label="Number of players">
+        <button data-n="1">1</button>
+        <button data-n="2" class="active">2</button>
+        <button data-n="3">3</button>
+        <button data-n="4">4</button>
+      </div>
+      <div id="name-inputs"></div>
+      <button id="btn-start" class="primary big">Start game</button>
+    </section>
+
+    <!-- ===== Game screen ===== -->
+    <section id="game" class="panel" hidden>
+      <div id="scoreboard"></div>
+
+      <div class="turn-panel">
+        <div class="turn-head">
+          <span id="turn-player" class="turn-player"></span>
+          <span class="turn-points-wrap">On the table: <strong id="turn-points">0</strong></span>
+        </div>
+
+        <div id="kept-tray" class="kept-tray" hidden>
+          <span class="tray-label">Set aside:</span>
+          <span id="kept-dice"></span>
+        </div>
+
+        <div id="dice-row" class="dice-row" aria-live="polite"></div>
+
+        <p id="selection-info" class="selection-info">&nbsp;</p>
+
+        <div class="actions">
+          <button id="btn-roll" class="primary big">Roll all 5 dice</button>
+          <button id="btn-keep-roll" class="primary big" hidden>Keep &amp; roll</button>
+          <button id="btn-bank" class="bank big" hidden>Bank points</button>
+        </div>
+      </div>
+
+      <div id="log" class="log"></div>
+    </section>
+  </main>
+
+  <!-- ===== Banner overlay (farkle / bust / win) ===== -->
+  <div id="banner" class="banner-overlay" hidden>
+    <div class="banner-card">
+      <div id="banner-emoji" class="banner-emoji"></div>
+      <h2 id="banner-title"></h2>
+      <p id="banner-text"></p>
+      <button id="btn-banner-continue" class="primary big"></button>
+    </div>
+  </div>
+
+  <!-- ===== Rules dialog ===== -->
+  <dialog id="dlg-rules">
+    <h2>Rules</h2>
+    <ul class="rules-list">
+      <li><strong>Win</strong> by reaching <strong>exactly 10,000</strong> points. If your banked score plus points on the table ever <em>exceeds</em> 10,000, you bust: your turn ends and you lose everything accrued this turn.</li>
+      <li>On your turn, roll all five dice. After each roll you must set aside at least one scoring die; every die you set aside must add to the score.</li>
+      <li><strong>Scoring:</strong> a lone <strong>5</strong> = 50 · a lone <strong>1</strong> = 100 · three of a kind = 100 × face value (three 2s = 200), except three <strong>1</strong>s = 1,000 · a five-dice straight (1–5 or 2–6) = 1,000.</li>
+      <li>You may not break up a three-of-a-kind if doing so would lower the points on the table — keep all three or leave them all behind.</li>
+      <li>After setting dice aside, either <strong>bank</strong> your table points and end your turn, or reroll the remaining dice to build a bigger total.</li>
+      <li>If a roll contains no scoring dice, that's a <strong>farkle</strong>: your turn ends and the table points blow up.</li>
+      <li>If all five dice score, that's <strong>hot dice</strong> — pick all five back up and keep rolling with your points intact.</li>
+    </ul>
+    <form method="dialog"><button class="primary">Close</button></form>
+  </dialog>
+
+  <!-- ===== Stats dialog ===== -->
+  <dialog id="dlg-stats">
+    <h2>Lifetime stats</h2>
+    <div id="stats-body"></div>
+    <div class="dialog-actions">
+      <button id="btn-reset-stats" class="ghost danger">Reset stats</button>
+      <form method="dialog"><button class="primary">Close</button></form>
+    </div>
+  </dialog>
+
+  <script src="js/logic.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
