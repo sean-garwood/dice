@@ -13,5 +13,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - run: npm test
+          node-version: '22'
+      - name: Run frontend tests
+        run: node test/logic.test.js
+      - name: Run worker tests
+        run: |
+          if [ -d worker ]; then
+            cd worker && npm install --no-audit --no-fund && npm test
+          else
+            echo "no worker/ yet — skipping"
+          fi
