@@ -31,10 +31,55 @@
       </div>
       <div id="name-inputs"></div>
       <button id="btn-start" class="primary big">Start game</button>
+
+      <hr class="setup-divider">
+
+      <div id="online-panel" class="online-panel">
+        <h2>Play with friends online</h2>
+        <p class="muted">Create a room and share the invite link, or join one a friend sent you.</p>
+        <label for="online-name">Your name</label>
+        <input id="online-name" type="text" maxlength="20" placeholder="Your name" autocomplete="off">
+        <button id="btn-create-room" class="primary big">Create room</button>
+        <div class="online-join-row">
+          <input id="online-join-code" type="text" maxlength="8" placeholder="Room code" autocapitalize="characters" autocomplete="off">
+          <button id="btn-join-room" class="big">Join</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Online lobby screen ===== -->
+    <section id="lobby" class="panel" hidden>
+      <div class="online-header">
+        <div class="room-code-wrap">
+          <span class="room-code-label">Room</span>
+          <span id="lobby-room-code" class="room-code"></span>
+        </div>
+        <div class="conn-status">
+          <span id="lobby-conn-dot" class="conn-dot"></span>
+          <span id="lobby-conn-label" class="conn-label"></span>
+        </div>
+      </div>
+      <button id="btn-copy-invite" class="ghost">Copy invite link</button>
+      <h2>Waiting for players&hellip;</h2>
+      <ul id="lobby-players" class="lobby-players"></ul>
+      <p id="lobby-hint" class="muted"></p>
+      <button id="btn-lobby-start" class="primary big" hidden>Start game</button>
     </section>
 
     <!-- ===== Game screen ===== -->
     <section id="game" class="panel" hidden>
+      <div id="online-header" class="online-header" hidden>
+        <div class="room-code-wrap">
+          <span class="room-code-label">Room</span>
+          <span id="game-room-code" class="room-code"></span>
+        </div>
+        <button id="btn-copy-invite-game" class="ghost small">Copy invite link</button>
+        <div class="conn-status">
+          <span id="game-conn-dot" class="conn-dot"></span>
+          <span id="game-conn-label" class="conn-label"></span>
+        </div>
+      </div>
+
       <div id="scoreboard"></div>
 
       <div class="turn-panel">
@@ -62,6 +107,9 @@
       <div id="log" class="log"></div>
     </section>
   </main>
+
+  <!-- ===== Online toast (non-blocking errors/notices) ===== -->
+  <div id="online-toast" class="online-toast" hidden></div>
 
   <!-- ===== Banner overlay (farkle / bust / win) ===== -->
   <div id="banner" class="banner-overlay" hidden>
@@ -99,6 +147,8 @@
   </dialog>
 
   <script src="js/logic.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/net.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
