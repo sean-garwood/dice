@@ -134,7 +134,7 @@ Edit `js/config.js` and set `serverUrl` to your Worker's URL (or pass it as a
 **Automated deployments (optional):** Use the GitHub Action at
 `.github/workflows/deploy-worker.yml`:
 
-1. Create a Cloudflare API token with **Workers** and **Workers AI** scopes:
+1. Create a Cloudflare API token using the **Edit Cloudflare Workers** template:
    https://dash.cloudflare.com/profile/api-tokens. Copy the token.
 2. In the repo **Settings → Secrets and variables → Actions**, add:
    - `CLOUDFLARE_API_TOKEN`: your API token
